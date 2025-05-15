@@ -1,17 +1,17 @@
-package top.naccl.service;
+package top.naccl.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.naccl.bean.DiningCarDTO;
 import top.naccl.dao.DiningCarRepository;
 import top.naccl.bean.DiningCar;
 import top.naccl.bean.Food;
 import top.naccl.bean.User;
+import top.naccl.service.DiningCarService;
 
-import java.util.LinkedHashMap;
+import java.util.Optional;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +32,10 @@ public class DiningCarServiceImpl implements DiningCarService {
 		return diningCarRepository.findByUserId(id);
 	}
 
+	public Optional<DiningCar> findById(Integer cartId) {
+		return diningCarRepository.findById(cartId);
+	}
+	
 	@Override
 	public Page<Food> getUserFoods(Integer id, Pageable pageable) {
 		return diningCarRepository.findByUserId(id, pageable);
@@ -62,6 +66,12 @@ public class DiningCarServiceImpl implements DiningCarService {
 	}
 
 	@Override
+	public List<String[]> getOrdersV2BYCode(String ordCode) {
+		List<String[]> result = diningCarRepository.findOrderUserByCode(ordCode);
+		return result;
+	}
+	
+	@Override
 	public List<String[]> getOrdersV2() {
 		List<String[]> result = diningCarRepository.findOrderUser();
 		return result;
@@ -83,4 +93,10 @@ public class DiningCarServiceImpl implements DiningCarService {
 	public DiningCar getDriverCarByFoodId(Integer foodId) {
 		return diningCarRepository.findByUserIdAndFoodId(foodId);
 	}
+
+	@Override
+	public List<DiningCar> findAllByUserId(Integer userId) {
+		return diningCarRepository.findAllByUserId(userId);
+	}
+
 }
